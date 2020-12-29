@@ -17,7 +17,7 @@
 import javax.swing.border.*;
 import java.awt.*;
 
-class ControlPanel extends GridBagPanel {
+class ControlPanel extends GridBagPanel{
     // Shared database of this game.
     private Model model;
 
@@ -26,6 +26,7 @@ class ControlPanel extends GridBagPanel {
     private AnimationControlPanel animationControlPanel;
     private VehicleAddingPanel vehicleAddingPanel;
     private VehicleControlPanel vehicleControlPanel;
+    private ZoomPanel zoomPanel;
 
     // Parameterized constructor.
     // Parameters: Model model: The shared database of this game.
@@ -58,11 +59,19 @@ class ControlPanel extends GridBagPanel {
         animationControlPanel.setBorder(new LineBorder(Color.black, 1));
         add(animationControlPanel, currGridBagConstraints);
 
+        // Add the zoom control panel that control the animation of enemy vehicles.
+        this.zoomPanel = new ZoomPanel(this.model);
+        setGridBagConstraintsToDefault(currGridBagConstraints);
+        currGridBagConstraints.gridx = 0;
+        currGridBagConstraints.gridy = 2;
+        zoomPanel.setBorder(new LineBorder(Color.black, 1));
+        add(zoomPanel, currGridBagConstraints);
+
         // Add the vehicle adding panel.
         this.vehicleAddingPanel = new VehicleAddingPanel(this.model);
         setGridBagConstraintsToDefault(currGridBagConstraints);
         currGridBagConstraints.gridx = 0;
-        currGridBagConstraints.gridy = 2;
+        currGridBagConstraints.gridy = 3;
         vehicleAddingPanel.setBorder(new LineBorder(Color.black, 1));
         add(vehicleAddingPanel, currGridBagConstraints);
 
@@ -70,7 +79,7 @@ class ControlPanel extends GridBagPanel {
         this.vehicleControlPanel = new VehicleControlPanel(this.model);
         setGridBagConstraintsToDefault(currGridBagConstraints);
         currGridBagConstraints.gridx = 0;
-        currGridBagConstraints.gridy = 4;
+        currGridBagConstraints.gridy = 5;
         vehicleControlPanel.setBorder(new LineBorder(Color.black, 1));
         add(vehicleControlPanel, currGridBagConstraints);
 

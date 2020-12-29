@@ -24,7 +24,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-class Main extends JFrame implements ComponentListener{
+class Main extends JFrame implements ComponentListener, KeyListener{
     // Size of the window.
     private int mainWindowWidth;
     private int mainWindowHeight;
@@ -59,6 +59,10 @@ class Main extends JFrame implements ComponentListener{
     public Main() {
         // Listener for the size of the main window.
         this.addComponentListener(this);
+
+        // Listener for key events.
+        this.addKeyListener(this);
+        this.setFocusable(true);
 
         // Setup the shared database.
         this.model = new Model();
@@ -102,7 +106,7 @@ class Main extends JFrame implements ComponentListener{
         setVisible(true);
     }
 
-    // Handler for main window resized.
+    // Handlers for main window resized.
     public void componentResized(ComponentEvent e) {
         this.mainWindowWidth = this.getWidth();
         this.mainWindowHeight = this.getHeight();
@@ -124,19 +128,40 @@ class Main extends JFrame implements ComponentListener{
             this.infoPanel.showInfoBoard();
         }
     }
-
-    // Handler for main window moved.
     public void componentMoved(ComponentEvent e) {
 
     }
-
-    // Handler for main window showed.
     public void componentShown(ComponentEvent e) {
 
     }
-
-    // Handler for main window hidden.
     public void componentHidden(ComponentEvent e) {
+
+    }
+
+    // Handlers for key events.
+    public void keyTyped(KeyEvent e) {
+
+    }
+    public void keyPressed(KeyEvent e) {
+        System.out.println("Key " + e.getKeyChar()+" is pressed.");
+
+        if (e.getKeyCode()==KeyEvent.VK_W) {
+            this.model.moveControlledVehicle(Object.NORTH);
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_A) {
+            this.model.moveControlledVehicle(Object.WEST);
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_S) {
+            this.model.moveControlledVehicle(Object.SOUTH);
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_D) {
+            this.model.moveControlledVehicle(Object.EAST);
+        }
+        else if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+            this.model.fireControlledVehicle();
+        }
+    }
+    public void keyReleased(KeyEvent e) {
 
     }
 }

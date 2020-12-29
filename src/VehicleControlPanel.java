@@ -25,7 +25,7 @@ class VehicleControlPanel extends GridBagPanel {
     private DirectionButton downButton; // Let player tank move down.
     private DirectionButton leftButton; // Let player tank move left.
     private DirectionButton rightButton; // Let player tank move right.
-    private JButton fireButton; // Let player tank fire.
+    private FireButton fireButton; // Let player tank fire.
 
     // Parameterized constructor.
     // Parameters: Model model: The shared database of this game.

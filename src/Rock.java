@@ -1,3 +1,4 @@
+
 /*******************************************************************************
 * Assignment 6
 * Comp 86 Fall 2019 
@@ -15,38 +16,42 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-class Rock extends LandscapeObject{
-    // Drawing settings.
-    private Color strokeColor = Color.black;
-    private Color fillColor = Color.lightGray;
-    // Rock.
-    private double rockWidth;
-    private double rockLength;
+class Rock extends Object {
+    // Rock size.
+    // Since rock is a square, rock size is the length of its sides.
+    private double rockSize;
 
-    public Rock(double centerPosX, double centerPosY){
-        // Set the initial position.
+    public Rock(double centerPosX, double centerPosY) {
+        // Initialize the position.
         this.centerPosX = centerPosX;
         this.centerPosY = centerPosY;
 
-        this.collisionBoundary = this.getCollisionBoundary();
+        this.strokeColor = Color.black;
+        this.fillColor = Color.lightGray;
     }
 
-    private Shape getRockShape(){
-        this.rockWidth = 4 * LandscapeObject.unitWidth;
-        this.rockLength = 4 * LandscapeObject.unitLength;
+    private Shape getRockShape(double originPosX, double originPosY, 
+            double zoomScale) {
+        this.rockSize = 4 * Object.unitSize;
+
+        // Convert "real" coordinates to drawing coordinates.
+        double drawingCenterPosX = this.getDrawingPosX(originPosX, zoomScale);
+        double drawingCenterPosY = this.getDrawingPosY(originPosY, zoomScale);
+
         Shape rockShape = new Rectangle2D.Double(
-            this.centerPosX - this.rockWidth / 2, 
-            this.centerPosY - this.rockLength / 2, 
-            this.rockWidth, 
-            this.rockLength);
+                drawingCenterPosX - this.rockSize / 2, 
+                drawingCenterPosY - this.rockSize / 2,
+                this.rockSize, 
+                this.rockSize);
         return rockShape;
     }
 
     // Draw this rock.
-    public void draw(Graphics g) {
+    public void draw(Graphics g, double originPosX, double originPosY, 
+            double zoomScale) {
         Graphics2D g2 = (Graphics2D) g;
 
-        Shape rockShape = getRockShape();
+        Shape rockShape = this.getRockShape(originPosX, originPosY, zoomScale);
 
         g2.setColor(this.fillColor);
         g2.fill(rockShape);
@@ -54,6 +59,11 @@ class Rock extends LandscapeObject{
         g2.setColor(this.strokeColor);
         g2.draw(rockShape);
 
-        this.drawCollisionBoundary(g);
+        this.drawCollisionBoundary(g, originPosX, originPosY, zoomScale);
+    }
+
+    @Override
+    protected void tick() {
+
     }
 }

@@ -10,7 +10,7 @@
 * Vehicle.java: 
 * Vehicle class is the abstract base class for all the vehicles in this game.
 * A Vehicle class object contains basic settings for a vehicle, including id, 
-* position, direction, speed and size.
+* position, direction, speed and unit size.
 * Vehicle class has basic rotate and move methods for all the vehicles in this 
 * game.
 *******************************************************************************/
@@ -18,66 +18,42 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public abstract class Vehicle{
+public abstract class Vehicle extends Object{
     // Vehicle id.
     protected int id;
 
-    // Center coordinate.
-    protected double centerPosX;
-    protected double centerPosY;
-
-    // Collision size.
-    protected double collisionWidth;
-    protected double collisionLength;
-    protected Rectangle2D collisionBoundary;
-
     // Color settings.
-    protected Color strokeColor;
-    protected Color fillColor;
     protected Color highlightColor = Color.green;
 
     // Whether this vehicle is selected and highlighted.
     protected boolean isHighlighted;
 
-    // Direction.
-    // These direction constants facilitate the setting of vehicle directions.
-    public static final int NORTH = 0;
-    public static final int EAST = 1;
-    public static final int SOUTH = 2;
-    public static final int WEST = 3;
-    // Vehicle direction.
-    protected int direction; // Integer 0 denotes north;
-                             // Integer 1 denotes east;
-                             // Integer 2 denotes south;
-                             // Integer 3 denotes west;
-
-    // Unit size for the vehicle.
-    protected final static double unitWidth = 10;
-    protected final static double unitLength = 10;
-
     // Linear speed of this vehicle.
-    protected double speedX;
-    protected double speedY;
+    protected double speed;
 
-    // Abstract method draw.
-    // Parameters: Graphics g: the Graphics object that draws.
-    // Returns: nothing
-    // Does: It draws the vehicle itself.
-    protected abstract void draw(Graphics g);
+    // Abstract draw method.
+    protected abstract void draw(Graphics g, double originPosX, 
+            double originPosY, double zoomScale);
 
     // Method rotateToCurrDirection.
     // Parameters: Shape s: The shape before rotation.
     // Returns: (Shape) The shape after rotation.
     // Does: It rotates a shape around the vehicle center to get to the given 
     //       direction.
-    protected Shape rotateToCurrDirection(Shape s) {
+    protected Shape rotateToCurrDirection(Shape s, double originPosX, 
+            double originPosY, double zoomScale) {
+        // Convert the "real" coordinate to drawing coordinate.
+        double drawingCenterPosX = this.getDrawingPosX(originPosX, zoomScale);
+        double drawingCenterPosY = this.getDrawingPosY(originPosY, zoomScale);
+
         AffineTransform rotation = new AffineTransform();
         // Rotation of n * 90 degrees clockwise around this tank center.
         // Turn north: n = direction = 0.
         // Turn east: n = direction = 1.
         // Turn south: n = direction = 2.
         // Turn west: n = direction = 3.
-        rotation.setToRotation(Math.PI / 2 * direction, centerPosX, centerPosY);
+        rotation.setToRotation(Math.PI / 2 * direction, drawingCenterPosX, 
+                drawingCenterPosY);
         s = rotation.createTransformedShape(s);
         return s;
     }
@@ -92,14 +68,14 @@ public abstract class Vehicle{
     //       vehicle will turn to that direction.
     public void move(int direction) {
         if (this.direction == direction) {
-            if (direction == Vehicle.NORTH) {
-                this.centerPosY -= this.speedY;
-            } else if (direction == Vehicle.SOUTH) {
-                this.centerPosY += this.speedY;
-            } else if (direction == Vehicle.WEST) {
-                this.centerPosX -= this.speedX;
-            } else if (direction == Vehicle.EAST) {
-                this.centerPosX += this.speedX;
+            if (direction == Object.NORTH) {
+                this.centerPosY -= this.speed;
+            } else if (direction == Object.SOUTH) {
+                this.centerPosY += this.speed;
+            } else if (direction == Object.WEST) {
+                this.centerPosX -= this.speed;
+            } else if (direction == Object.EAST) {
+                this.centerPosX += this.speed;
             }
         } else {
             this.direction = direction;
@@ -110,25 +86,30 @@ public abstract class Vehicle{
     protected abstract void tick();
 
     // Create and return the a collision boundary shape.
-    public Rectangle2D getCollisionBoundary() {
-        // Set the collision boundary size.
-        if (this.direction == Vehicle.NORTH 
-        || this.direction == Vehicle.SOUTH) {
-            this.collisionWidth = Vehicle.unitWidth * 4;
-            this.collisionLength = Vehicle.unitLength * 4;
+    public Rectangle2D getCollisionBoundary(double originPosX, 
+            double originPosY, double zoomScale) {
+        // Set the collision boundary size based on vehicle direction.
+        if (this.direction == Object.NORTH 
+        || this.direction == Object.SOUTH) {
+            this.collisionWidth = Object.unitSize * 4;
+            this.collisionLength = Object.unitSize * 4;
         }
-        else if (this.direction == Vehicle.EAST 
-        || this.direction == Vehicle.WEST) {
-            this.collisionWidth = Vehicle.unitLength * 4;
-            this.collisionLength = Vehicle.unitWidth * 4;
+        else if (this.direction == Object.EAST 
+        || this.direction == Object.WEST) {
+            this.collisionWidth = Object.unitSize * 4;
+            this.collisionLength = Object.unitSize * 4;
         }
 
         // Set the collision boundary center is the vehicle center.
 
+        // Convert the "real" coordinate to drawing coordinate.
+        double drawingCenterPosX = this.getDrawingPosX(originPosX, zoomScale);
+        double drawingCenterPosY = this.getDrawingPosY(originPosY, zoomScale);
+
         // Create a collision boundary shape.
         Rectangle2D collisionBoundaryShape = new Rectangle2D.Double(
-            this.centerPosX - this.collisionWidth / 2,
-            this.centerPosY - this.collisionLength / 2, 
+            drawingCenterPosX - this.collisionWidth / 2,
+            drawingCenterPosY - this.collisionLength / 2, 
             this.collisionWidth, 
             this.collisionLength);
 
@@ -136,10 +117,13 @@ public abstract class Vehicle{
     }
 
     // Draw a collision boundary.
-    protected void drawCollisionBoundary(Graphics g) {
+    protected void drawCollisionBoundary(Graphics g, double originPosX, 
+            double originPosY, double zoomScale) {
         Graphics2D g2 = (Graphics2D) g;
 
-        this.collisionBoundary = getCollisionBoundary();
+        // Update collision boundary.
+        this.collisionBoundary 
+                = getCollisionBoundary(originPosX, originPosY, zoomScale);
 
         if (isHighlighted) {
             g2.setColor(highlightColor);
@@ -148,11 +132,6 @@ public abstract class Vehicle{
             g2.setColor(new Color(0, 0, 0, 0));
         }
         g2.draw(this.collisionBoundary);
-    }
-
-    // Check if the given point is in collision boundary.
-    protected boolean isMouseSelected(Point point){
-        return this.collisionBoundary.contains(point);
     }
 
     // Set the vehicle highlight state.
@@ -167,27 +146,28 @@ public abstract class Vehicle{
         }
     }
 
-    // Check if the given shape intersects with this collision boundary.
-    public boolean isCollided(Rectangle2D r){
-        return this.collisionBoundary.intersects(r);
-    }
-
-    // Getter for vehicle position.
-    public double getPosX(){
-        return this.centerPosX;
-    }
-    public double getPosY(){
-        return this.centerPosY;
-    }
-
-    // Setter for vehicle position.
-    public void setPos(double x, double y){
-        this.centerPosX = x;
-        this.centerPosY = y;
-    }
-
     // Getter for vehicle direction.
     public int getDirection(){
         return this.direction;
+    }
+
+    // Draw the vehicle id.
+    protected void drawId(Graphics g, double originPosX, 
+            double originPosY, double zoomScale) {
+        Graphics2D g2 = (Graphics2D) g;
+        
+        // Convert the "real" coordinate to drawing coordinate.
+        double drawingCenterPosX = this.getDrawingPosX(originPosX, zoomScale);
+        double drawingCenterPosY = this.getDrawingPosY(originPosY, zoomScale);
+
+        g2.setColor(this.fillColor);
+        g2.drawString(
+                "ID:" + Integer.toString(this.id), 
+                (float) (drawingCenterPosX - Object.unitSize * 1),
+                (float) (drawingCenterPosY - Object.unitSize * 2.5));
+    }
+
+    public int getID() {
+        return this.id;
     }
 }

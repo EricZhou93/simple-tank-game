@@ -22,14 +22,12 @@ public class EnemyLightTank extends LightTank {
     private int step;
     
     // Default constructor.
-    public EnemyLightTank(
-        int id,
-        double centerPosX, 
-        double centerPosY, 
-        int direction
-        ) {
-        super(id, centerPosX, centerPosY, direction);
-        
+    public EnemyLightTank(int id, double centerPosX, double centerPosY, 
+            int direction, double originPosX, double originPosY, 
+            double zoomScale) {
+        super(id, centerPosX, centerPosY, direction, originPosX, originPosY, 
+                zoomScale);
+
         // Set the color to yellow.
         this.fillColor = Color.gray;
 
@@ -39,13 +37,19 @@ public class EnemyLightTank extends LightTank {
 
     // Draw the vehicle id.
     @Override
-    protected void drawId(Graphics g) {
+    protected void drawId(Graphics g, double originPosX, 
+            double originPosY, double zoomScale) {
         Graphics2D g2 = (Graphics2D) g;
+
+        // Convert the "real" coordinate to drawing coordinate.
+        double drawingCenterPosX = this.getDrawingPosX(originPosX, zoomScale);
+        double drawingCenterPosY = this.getDrawingPosY(originPosY, zoomScale);
+
         g2.setColor(this.fillColor);
         g2.drawString(
             "Enemy:" + Integer.toString(this.id), 
-            (float) (this.centerPosX - Vehicle.unitWidth * 2.5),
-            (float) (this.centerPosY - Vehicle.unitLength * 2.5)
+            (float) (drawingCenterPosX - Object.unitSize * 2.5),
+            (float) (drawingCenterPosY - Object.unitSize * 2.5)
         );
     }
 

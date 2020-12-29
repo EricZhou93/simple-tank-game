@@ -1,19 +1,16 @@
 /*******************************************************************************
-* Assignment 6
+* Assignment 7
 * Comp 86 Fall 2019 
 *
 * Author: Keren Zhou    Student ID: 1328495
 *
 * 2019-10-10 Created.
-* 2019-10-25 Last modified.
+* 2019-11-1 Last modified.
 *
 * README
 *******************************************************************************/
 
 Acknowledgements:
-    I referenced Oracle Java tutorials and documents for learning contains and 
-    intersects method in java.awt.Shape to implement mouse picking and 
-    collision detection.
 
 
 Compile and Run:
@@ -49,16 +46,17 @@ How to Play:
     To select a tank, player can use mouse to click on a yellow player tank. 
     The selected tank is highlighted (surrounded by a green rectangles).
 
-    To control the selected tank, player can use direction buttons and the fire 
-    button in the vehicle control panel.
-    Pressing a direction button can let the select tank turn to the given 
-    direction or move forward. 
+    To control the selected tank, player can press "w", "a", "s" and "d" to 
+    move the tank and press space to let it fire.
+    Player can also press direction buttons in the vehicle control to move the tank and press the fire button to let it fire.
+
     Tanks can be blocked by other tanks and rocks (light grey rectangles on the 
     map).
-    Pressing the fire button can let the select tank fire a red shell (button) 
-    forward. 
-    Shells can be blocked by an enemy tank or a rock but can pass through a 
-    player tank. Thus, players do not have to worry about friendly fire.
+
+    A shell (a small, red circle) fired by player tanks can be blocked by an 
+    enemy tank or a rock but can pass through a player tank. Thus, players do 
+    not have to worry about friendly fire.
+
     If an enemy tank is hit by player's shell, the enemy tank will be 
     destroyed. This adds one to the player kills and minus one to the enemy 
     left on the information board at the bottom of the window.
@@ -66,203 +64,157 @@ How to Play:
     There are 2 kinds of tanks, light and heavy. Light tanks moves faster and 
     look slimmer than heavy tanks.
 
+
+Other features:
     There are other control widgets in the control panel on the right side 
     of the main window.
+
     Background color combo box can set the canvas background color.
+
+    Zoom control shows the current zoom scale. It can zoom in or out the map. 
+
     Animation control has a play and a pause button to start and stop auto 
     movements (animation) of enemy tanks.
+
     Vehicle adding panel has 2 text fields to input the starting position of 
     the new vehicle. And tank category buttons decide which kind of tanks will 
     be added to the battlefield.
 
+    When adjusting the size of the main window, if the window is too small, the information board and the background color panel will be hidden.
+
 
 Files:
 * Main.java: 
-    Main class contains the main method, the entrance of the program.
-    * Main class contains the main method, the entrance of the program.
-    * A Main class object works as the main window for this program. It 
-    contains graphical and text displays for this game and a control panel for 
-    all control widgets.
-    * Main class has a listener and handlers for main window resized. The 
-    information board (text displays for this game) will be hidden to save 
-    space for the canvas if the window is too small. The background color combo 
-    box will also be hidden by calling public method of the control panel.
+    It contains main method, the entrance of the program.
+    Main class is designed for the main window of this program.
 
 * Model.java:
-    A Model object works as a shared database for this program. 
-    * It contains a timer to maintain the animation for this program.
-    * It contains a pointer to canvas to facilitate (re-)drawing routines.
-    * It contains array lists of vehicles and landscape objects facilitating 
-    the maintenance of their drawing and animation routines.
-    * All the widgets in control panel control vehicles and other objects 
-    through this model (shared database) to unify and simply the wiring 
-    relationships.
+    Model class is designed as the shared database and the background 
+    
+    administrator.
+    It maintains the drawing routines, animation and collision mechanisms of 
+    all objects showed on the canvas.
 
 * Canvas.java:
-    A Canvas object works as a graphical display for the battlefield in this 
-    game. Shapes and actions of player tanks, enemy tanks and landscape objects 
-    are all showed on the canvas. 
-    * It contains a pointer to model (shared database) that facilitates calling 
-    drawing methods for all vehicles and landscape objects.
+    Model class is designed as the graphical display of this program.
 
 * GridBagPanel.java:
-    GridBagPanel class is a base class designed for JPanel subclass using 
-    GridBagLayout.
-    Its method setGridBagConstraintsToDefault can set the given 
-    ridBagConstraints object to a specified default state. It facilitates the 
-    reuse of GridBagConstraints objects.
+    Base class for all panels using grid bag layout.
+    It has a method to reset a gird bag constrain facilitating reusing of grid 
+    bag constrains.
 
 * ControlPanel.java:
-    The control panel works as a container for all the other control panels for 
-    specific features.
-    * Separating the control panel into multiple control panels for a simple 
-    function improves the modularity of codes and facilitates future 
-    developments.
+    A panel contains all other specific control panels.
 
 * BackgroundColorPanel.java: 
-    The background color panel has a combo box to select canvas background 
-    color.
+    It contains a BackgroundColorComboBox to change the background color of the 
+    canvas.
 
 * BackgroundColorComboBox.java: 
-    BackgroundColorComboBox is designed for a combo box to select canvas 
-    background color.
+    It calls the model to call the canvas to change its background color.
 
 * AnimationControlPanel.java: 
-    AnimationControlPanel class is designed to control the animation in this 
-    game.
-    An animation control panel has a play button and a pause button to start 
-    and stop the timer in model (shared database) to control animation of enemy 
+    It contains a play and a pause button to activate and deactivate enemy 
+    vehicles on the battlefield, i.e. start and pause the animation of enemy 
     vehicles.
 
-* VehicleAddingPanel.java:
-    VehicleAddingPanel class is designed for adding a vehicle of a given 
-    category to a given position in the battlefield.
-    A vehicle adding panel has text fields to input starting x and y 
-    coordinates of the new tank and buttons to add different kinds of vehicles 
-    to the battlefield.
-
-* VehicleSelectingPanel.java:
-    VehicleSelectingPanel class is designed for switching controlled vehicle 
-    among player vehicles. 
-    A vehicle selecting panel has next and previous tank buttons to switch the 
-    current controlled to the tanks right before and after it in the player 
-    vehicle array list in the model (shared database).
-
 * VehicleControlPanel.java:
-    VehicleControlPanel classes is designed for controlling a single tank.
-    A vehicle control panel has 4 direction buttons to move the controlled tank 
-    up, down, left and right and a fire button to let the controlled tank fire.
+    It contains directions buttons to move the selected vehicle and a fire 
+    button to let it fire.
 
 * InfoPanel.java: 
-    The InfoPanel class is designed for the text display of the battlefield in 
-    this game. 
-    The information board has not been fully implemented but it will display 
-    game information, such as the HP player tank and player current score.
+    It contains a information board and 2 labels showing how many enemies left 
+    and how many enemies play killed.
 
 * Button.java: 
-    The Button class is designed as a base class for all buttons in this game.
-    When a Button class object is pressed, the system prints a message about it.
+    Base class for all buttons.
+    When a Button object is pressed, a pressed message will be printed in the 
+    console.
 
 * DirectionButton.java: 
-    DirectionButton class is based on Button classed. It is designed for 
-    buttons to control the movement of a player vehicle.
+    Buttons call model to move the selected vehicle.
 
 * AddVehicleButton.java: 
-    AddVehicleButton class is a base class for buttons to add a vehicle of a 
-    given category to a given position in the battlefield. 
-    An AddVehicleButton object connects to 2 text fields to get the starting 
-    position of the new vehicle.
+    A button call model to add a vehicle of a given type at a given position.
+    It gets the given position from 2 text fields.
 
 * AddEnemyHeavyTankButton.java: 
-    The AddEnemyHeavyTankButton class is based on AddVehicleButton and is 
-    designed for buttons to add an enemy heavy tank to a given position in the 
-    battlefield. 
+    A button call model to add a enemy heavy tank at a given position.
 
 * AddEnemyLightTankButton.java: 
-    The AddEnemyLightTankButton class is based on AddVehicleButton and is 
-    designed for buttons to add an enemy light tank to a given position in the 
-    battlefield. 
+    A button call model to add a enemy light tank at a given position.
 
 * AddPlayerLightTankButton.java: 
-    The AddPlayerLightTankButton class is based on AddVehicleButton and is 
-    designed for buttons to add an player light tank to a given position in the 
-    battlefield. 
+    A button call model to add a player light tank at a given position.
 
 * AddPlayerHeavyTankButton.java: 
-    The AddPlayerHeavyTankButton class is based on AddVehicleButton and is 
-    designed for buttons to add an player heavy tank to a given position in the 
-    battlefield. 
-
-* NextTankButton.java: 
-    The NextTankButton class is designed for switching controlled vehicle to 
-    the next one in the player vehicle array list in the model (shared 
-    database).
-
-* PrevTankButton.java: 
-    The NextTankButton class is designed for switching controlled vehicle to 
-    the previous one in the player vehicle array list in the model (shared database).
+    A button call model to add a player heavy tank at a given position.
 
 * PlayButton.java: 
-    The PlayButton class is designed for the play button that starts the timer 
-    in the model (shared database) to start / resume the animation.
-    When the timer is working, the play button is disabled.
+    A button calls model to activate the animation of enemy vehicles.
+    It also disables itself and enables the pause button.
 
 * PauseButton.java: 
-    The PauseButton class is designed for the pause button that stops the timer 
-    in the model (shared database) to pause the animation.
-    When the timer is not working, the pause button is disabled.
+    A button calls model to deactivate the animation of enemy vehicles.
+    It also disables itself and enables the play button.
+
+* Object.java:
+    Base class for all objects showed on the canvas (battlefield).
 
 * Vehicle.java: 
-    Vehicle class is the abstract base class for all the vehicles in this game.
-    A Vehicle class object contains basic settings for a vehicle, including id, 
-    position, direction, speed and size.
-    Vehicle class has basic rotate and move methods for all the vehicles in 
-    this game.
+    Base class for all vehicles.
+    It contains basic properties such as center coordinates, unit size, 
+    direction, collision boundary and so on.
+
+* Tank.java
+    Base class for all tanks.
+    It contains special shapes for tanks, such as a hull, a turret, tracks and 
+    an artillery.
 
 * LightTank.java:
-    LightTank class is designed for light tanks in this game.
-    LightTank class has its own drawing method and procedure.
+    A base class designed for light tanks.
+    It has its special shapes.
 
 * PlayerLightTank.java: 
-    PlayerLightTank class is designed for light tanks that can be controlled by 
-    player in this game.
-    PlayerLightTank class is based on LightTank class but the fill color is set 
-    to yellow.
+    A class designed for player light tanks.
+    It has special id notation for player vehicles.
+    Its fill color is set to yellow.
 
 * EnemyLightTank.java: 
-    EnemyLightTank class is designed for enemy light tanks in this game.
-    EnemyLightTank class is based on LightTank class but the fill color is set to gray.
-    It has its own tick method (animation routine) to automatically move an enemy light tank itself.
+    A class designed for enemy light tanks.
+    It has special id notation for enemy vehicles.
+    It has animation routines.
+    Its fill color is set to grey.
 
 * HeavyTank.java:
-    HeavyTank class is designed for heavy tanks in this game.
-    HeavyTank class has its own drawing method and procedure.
+    A base class designed for heavy tanks.
+    It has its special shapes.
 
 * PlayerHeavyTank.java: 
-    PlayerHeavyTank class is designed for heavy tanks that can be controlled by 
-    play in this game.
-    PlayerHeavyTank class is based on HeavyTank class but the fill color is set 
-    to yellow.
+    A class designed for player heavy tanks.
+    It has special id notation for player vehicles.
+    Its fill color is set to yellow.
 
 * EnemyHeavyTank.java: 
-    EnemyHeavyTank class is designed for enemy heavy tanks in this game.
-    EnemyHeavyTank class is based on HeavyTank class but the fill color is set to gray.
-    It has its own tick method to move an enemy light tank itself.
-
-* LandscapeObject.java: 
-    LandscapeObject class is the abstract base for all the Landscape object in 
-    this game.
-    It contains basic settings for landscape objects, including position and 
-    size.
+    A class designed for enemy heavy tanks.
+    It has special id notation for enemy vehicles.
+    It has animation routines.
+    Its fill color is set to grey.
 
 * Rock.java:
-    Rock class is designed for rock, a kind of landscape objects in this game.
-    Rock class has its own drawing method and procedure.
+    A class designed for a kind of landscape objects, rocks.
+    It blocks all the vehicles and shells (bullets).
 
 * TextField.java: 
-    TextField class is designed for common text fields used in this game.
-    If a user inputs something into a TextField object and hits enter, system 
-    will print the content of the text field.
+    A JTextField subclass for inputting initial coordinates of vehicles.
+
+* Shell.java
+    A class designed for shells (bullets) fired by tanks.
+    A shell fired by a player tank pass through player tanks. Thus, no need to 
+    worry about friendly fire.
+    If a shell hits an enemy vehicle, the shell and the enemy vehicle will be 
+    destroyed.
+    If a shell hits a rock, the shell will be destroyed.
 
 
 Inheritance Hierarchy:
@@ -275,6 +227,7 @@ JPanel
         ControlPanel
         InfoPanel
         BackgroundColorPanel
+        ZoomPanel
         AnimationControlPanel
         VehicleAddingPanel
         VehicleControlPanel
@@ -287,22 +240,23 @@ JButton
             AddEnemyLightTankButton
             AddPlayerHeavyTankButton
             AddPlayerLightTankButton
-            PlayButton
-            PauseButton
+        PlayButton
+        PauseButton
 JComboBox
     BackgroundColorComboBox
 JTextField
     TextField
-Vehicle
-    LightTank
-        PlayerLightTank
-        EnemyLightTank
-    HeavyTank
-        PlayerHeavyTank
-        EnemyHeavyTank
-LandscapeObject
+Object
+    Vehicle
+        Tank
+            LightTank
+                PlayerLightTank
+                EnemyLightTank
+            HeavyTank
+                PlayerHeavyTank
+                EnemyHeavyTank
     Rock
-Shell
+    Shell
 
 
 Aggregation Hierarchy:
@@ -314,7 +268,7 @@ Main
         ArrayList <Vehicle> enemyVehicleArrayList
             EnemyLightTank(s)
             EnemyHeavyTank(s)
-        ArrayList <LandscapeObject> landscapeObjectArrayList
+        ArrayList <Object> landscapeObjectArrayList
             Rock(s)
         ArrayList<Shell> shellArrayList
             Shell(s)
@@ -325,6 +279,10 @@ Main
         AnimationControlPanel animationControlPanel
             PlayButton playButton
             PauseButton pauseButton
+        ZoomPanel zoomPanel
+            Button zoomInButton
+            Button zoomOutButton
+            JLabel zoomScaleLabel
         VehicleAddingPanel vehicleAddingPanel
             AddEnemyLightTankButton addEnemyLightTankButton
             AddEnemyHeavyTankButton addEnemyHeavyTankButton
@@ -339,26 +297,34 @@ Main
             DirectionButton rightButton
             FireButton fireButton
      InfoPanel infoPanel
-
+        JTextArea infoBoard
+        JScrollPane scrollbar
+        JLabel playerKillsLabel
+        JLabel enemyLeftLabel
 
 Uses ("Collaboration") Hierarchy
 Main
     Calls ControlPanel to hide or show BackgroundColorPanel.
     Calls InfoPanel to hide or show JTextArea infoBoard.
+    Calls Model to move or fire the controlled player tank.
 Model
-    Calls Vehicle(s), LandscapeObject(s) and Shell(s) to draw themselves.
+    Calls Vehicle(s), (Landscape)Object(s) and Shell(s) to draw themselves.
     Calls Canvas to redraw or change background color.
+    Calls Canvas to return its width and height.
     Calls InfoPanel to update JLabel playerKillsLabel and enemyLeftLabel.
 Canvas
+    Calls Model to draw Objects (vehicles, landscape objects and shells).
     Calls Model to set the selected Vehicle according to the mouse click.
 BackgroundColorComboBox
-    Calls Model to call Canvas to change background color.
+    Calls Model to call Canvas to change the background color.
 PlayButton
     Calls Model to activate enemy Vehicle(s).
     Calls PauseButton to set itself enable.
 PauseButton
     Calls Model to deactivate enemy Vehicle(s).
     Calls PlayButton to set itself enable.
+ZoomPanel
+    Calls Model to change the zoom scale (zoom in or out).
 AddXXXTankButton
     Calls Model to add a tank of the given type to corresponding array 
     list.
