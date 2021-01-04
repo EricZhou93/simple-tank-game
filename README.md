@@ -1,8 +1,10 @@
 # simple-tank-game
 Author: Keren Zhou  
 Date: From 2019-09-27 to 2019-10-25  
-Summary: A simple tank game written in Java, a course project for comp86 at Tufts University.  
-概述：用Java写的坦克小游戏，塔夫斯大学comp86课程的课程项目。  
+Summary: A simple tank game written in Java and Swing, a course project for comp86 at Tufts University.  
+概述：用Java及其Swing组件写的坦克大战小游戏，塔夫斯大学comp86课程的课程项目。  
+
+<img src="resource/screenshot.png" alt="screen shot" width="500"/>
 
 <br>
 
@@ -27,6 +29,7 @@ How to compile and run:
 <br>
 
 ## How to Play
+
 In this game, the player is supposed to control yellow player tanks to eliminate gray enemy tanks.  
 
 At the beginning, there are multiple yellow player tanks available. The player can select one of them by mouse click to control it. The select tank is surrounded by a green rectangle.  
