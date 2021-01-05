@@ -2,7 +2,7 @@
 Author: Keren Zhou  
 Date: From 2019-09-27 to 2019-10-25  
 Summary: A simple tank game written in Java and Swing, a course project for comp86 at Tufts University.  
-概述：用Java及其Swing组件写的坦克大战小游戏，塔夫斯大学comp86课程的课程项目。  
+概述：用Java及其Swing组件写的坦克大战小游戏，塔夫茨大学comp86课程的课程项目。  
 
 <img src="resource/screenshot.png" alt="screen shot" width="500"/>
 
