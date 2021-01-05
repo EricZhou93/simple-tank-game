@@ -74,9 +74,9 @@ be added to the battlefield.
 <br>
 
 ## Files
-* spec: Assignment specifications related to this course project for comp86 at Tufts University.
+* spec: Assignment specifications for comp86 at Tufts University, which are related to this course project .
 * src: Java source codes for this project. You can compile and run this project under this directory.
 
-## 文件
-* spec: 与该项目相关的塔夫斯大学comp86课程的作业要求。
+## 文件说明
+* spec: 与该项目相关的塔夫茨大学comp86课程的作业要求。
 * src: 该项目的Java源代码。可以在该路径下编译与运行该项目。
