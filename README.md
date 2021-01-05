@@ -74,7 +74,7 @@ be added to the battlefield.
 <br>
 
 ## Files
-* spec: Assignment specifications for comp86 at Tufts University, which are related to this course project .
+* spec: Assignment specifications for comp86 at Tufts University, which are related to this project .
 * src: Java source codes for this project. You can compile and run this project under this directory.
 
 ## 文件说明
